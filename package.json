@@ -11,6 +11,7 @@
         "lodash": "^4.17.21",
         "pinia": "^2.0.35",
         "vite": "^4.3.3",
+        "vite-svg-loader": "^4.0.0",
         "vue": "^3.2.47"
     },
     "dependencies": {
