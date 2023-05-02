@@ -4,6 +4,7 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
+use Wujidadi\LogFacade\MicrosecondFormatter;
 
 return [
 
@@ -60,6 +61,7 @@ return [
 
         'single' => [
             'driver' => 'single',
+            'tap' => [MicrosecondFormatter::class],
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
@@ -67,6 +69,7 @@ return [
 
         'daily' => [
             'driver' => 'daily',
+            'tap' => [MicrosecondFormatter::class],
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
@@ -124,6 +127,7 @@ return [
         ],
 
         'emergency' => [
+            'tap' => [MicrosecondFormatter::class],
             'path' => storage_path('logs/laravel.log'),
         ],
     ],
