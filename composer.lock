@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4cd5bd4c41e6ba87b842cc94826dd3c9",
+    "content-hash": "1c2c64e8bb4d529f8b9c58421c6813b9",
     "packages": [
         {
             "name": "brick/math",
@@ -5461,6 +5461,56 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "wujidadi/laravel-log-facade",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Wujidadi/Laravel-Log-Facade.git",
+                "reference": "c295fdfb0e563564495175c4b3084a16ae4eeb82"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Wujidadi/Laravel-Log-Facade/zipball/c295fdfb0e563564495175c4b3084a16ae4eeb82",
+                "reference": "c295fdfb0e563564495175c4b3084a16ae4eeb82",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^7.0",
+                "guzzlehttp/psr7": "^2.0",
+                "laravel/framework": "^9.0 || ^10.0",
+                "monolog/monolog": "^3.0",
+                "nesbot/carbon": "^2.0 || ^3.0",
+                "php": "^8.0",
+                "psr/http-message": "^1.0 || ^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Wujidadi\\LogFacade\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Wujidadi",
+                    "email": "wujidadi@gmail.com"
+                }
+            ],
+            "description": "A simple log facade tool based on Laravel.",
+            "keywords": [
+                "laravel",
+                "log"
+            ],
+            "support": {
+                "issues": "https://github.com/Wujidadi/Laravel-Log-Facade/issues",
+                "source": "https://github.com/Wujidadi/Laravel-Log-Facade/tree/1.0"
+            },
+            "time": "2023-05-02T02:22:12+00:00"
         }
     ],
     "packages-dev": [
