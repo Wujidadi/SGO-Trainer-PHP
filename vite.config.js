@@ -19,10 +19,10 @@ export default defineConfig({
         }),
         svgLoader(),
     ],
-    server: {
-        host: '0.0.0.0',
-        port: 49657,
-    },
+    // server: {
+    //     host: '0.0.0.0',
+    //     port: 49657,
+    // },
     resolve: {
         alias: {
             '@': '/resources',
