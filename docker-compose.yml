@@ -1,0 +1,74 @@
+version: '3.9'
+
+services:
+  app:
+    image: wujidadi/nginx-php:2.5.1
+    container_name: ${CONTAINER_NAME_PREFIX}
+    hostname: ${CONTAINER_HOST_PREFIX}
+    working_dir: ${CONTAINER_WORKDIR_APP}
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - .:${CONTAINER_WORKDIR_APP}
+      - ./docker/nginx.conf:/etc/nginx/sites-available/default
+      - ./docker/php.ini:/etc/php/${PHP_VERSION}/cli/conf.d/99-my.ini
+      - ./docker/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf
+      - ${DOCKER_VOLUME_PATH}/zsh/root.zsh_history:/root/.zsh_history
+      - ${DOCKER_VOLUME_PATH}/zsh/user.zsh_history:/home/${CONTAINER_NORMAL_USER}/.zsh_history
+    networks:
+      default:
+        ipv4_address: ${DOCKER_APP_IPV4}
+    ports:
+      - ${DOCKER_APP_PORT:-80}:80
+      - ${DOCKER_APP_OCTANE_PORT:-8000}:8000
+      - ${DOCKER_APP_VITE_PORT:-5173}:5173
+    command: >
+      bash -c "cron start;
+      supervisord -c /etc/supervisor/conf.d/supervisord.conf;
+      nginx -g 'daemon off;'"
+    restart: unless-stopped
+    depends_on:
+      - database
+
+  cache:
+    image: redis:7.2-rc-alpine
+    container_name: ${CONTAINER_NAME_PREFIX}-Cache
+    hostname: ${CONTAINER_HOST_PREFIX}-cache
+    volumes:
+      - ${DOCKER_VOLUME_PATH}/redis:/data
+    networks:
+      default:
+        ipv4_address: ${DOCKER_CACHE_IPV4}
+    ports:
+      - ${DOCKER_CACHE_PORT:-6379}:6379
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+    depends_on:
+      - app
+
+  database:
+    image: postgres:15.2
+    container_name: ${CONTAINER_NAME_PREFIX}-Database
+    hostname: ${CONTAINER_HOST_PREFIX}-database
+    environment:
+      - POSTGRES_USER=${DOCKER_DB_USERNAME}
+      - POSTGRES_PASSWORD=${DOCKER_DB_PASSWORD}
+      - POSTGRES_DB=${DOCKER_DB_NAME}
+      - TZ=${POSTGRESQL_TIMEZONE}
+      - PGTZ=${POSTGRESQL_TIMEZONE}
+    volumes:
+      - ${DOCKER_VOLUME_PATH}/postgresql:/var/lib/postgresql/data
+    networks:
+      default:
+        ipv4_address: ${DOCKER_DB_IPV4}
+    ports:
+      - ${DOCKER_DB_PORT:-5432}:5432
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
+    name: ${DOCKER_NETWORK_NAME}
+    ipam:
+      config:
+        - subnet: ${DOCKER_NETWORK_SUBNET}

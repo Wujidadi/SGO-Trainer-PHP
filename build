@@ -1,0 +1,48 @@
+#!/bin/bash
+
+DOCKER_VOLUME_PATH=/opt/docker/volumes/sgo-php-trainer
+DOCKER_COMPOSE_COMMAND=(docker-compose up -d)
+
+while getopts 'fd' option; do
+    case $option in
+        # Force recreate
+        f)
+            DOCKER_COMPOSE_COMMAND+=(--force-recreate)
+            ;;
+        # Down the containers
+        d)
+            docker-compose down -v
+            exit 0
+            ;;
+    esac
+done
+
+# Service names
+for ((i=$OPTIND; i<=$#; i++)) do
+    DOCKER_COMPOSE_COMMAND+=("${!i} ")
+done
+
+# Create volume directories and files
+if [ ! -d $DOCKER_VOLUME_PATH ]; then
+    mkdir -p $DOCKER_VOLUME_PATH
+fi
+if [ ! -d $DOCKER_VOLUME_PATH/zsh ]; then
+    mkdir -p $DOCKER_VOLUME_PATH/zsh
+fi
+if [ ! -f $DOCKER_VOLUME_PATH/zsh/root.zsh_history ]; then
+    touch $DOCKER_VOLUME_PATH/zsh/root.zsh_history
+fi
+if [ ! -f $DOCKER_VOLUME_PATH/zsh/user.zsh_history ]; then
+    touch $DOCKER_VOLUME_PATH/zsh/user.zsh_history
+fi
+if [ ! -d $DOCKER_VOLUME_PATH/redis ]; then
+    mkdir -p $DOCKER_VOLUME_PATH/redis
+fi
+if [ ! -d $DOCKER_VOLUME_PATH/postgresql ]; then
+    mkdir -p $DOCKER_VOLUME_PATH/postgresql
+fi
+
+# Execute
+${DOCKER_COMPOSE_COMMAND[@]}
+
+exit 0
