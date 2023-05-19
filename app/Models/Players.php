@@ -12,9 +12,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string $name 玩家暱稱
  * @property string $token Token
  * @property int $order 排序
- * @property Carbon $created_at 建立時間
- * @property Carbon $updated_at 更新時間
- * @property-read PlayerProcesses $processes 玩家自動程序開關
+ * @property ?Carbon $created_at 建立時間
+ * @property ?Carbon $updated_at 更新時間
+ * @property-read PlayerProcesses $process 玩家自動程序開關
  * @property-read PlayerItems $items 玩家物品清單
  * @property-read PlayerSettings $settings 玩家自動程序設定
  */
@@ -43,7 +43,7 @@ class Players extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s.u',
     ];
 
-    public function processes(): HasOne
+    public function process(): HasOne
     {
         return $this->hasOne(PlayerProcesses::class, 'player_name', 'name')->withDefault();
     }

@@ -11,8 +11,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property string $player_name 玩家暱稱
  * @property object $setting 設定
- * @property Carbon $created_at 建立時間
- * @property Carbon $updated_at 更新時間
+ * @property ?Carbon $created_at 建立時間
+ * @property ?Carbon $updated_at 更新時間
+ * @property-read Players $player 玩家基本資料
  */
 class PlayerSettings extends Model
 {
