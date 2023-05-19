@@ -130,6 +130,17 @@ return [
             'tap' => [MicrosecondFormatter::class],
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        'sgo' => [
+            'driver' => 'daily',
+            'tap' => [MicrosecondFormatter::class],
+            'path' => storage_path('logs/sgo/sgo.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+            'permission' => 0664,
+            'replace_placeholders' => true,
+            'by_middleware' => env('LOG_SGO_BY_MIDDLEWARE', false),
+        ],
     ],
 
 ];

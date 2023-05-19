@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Utils as GuzzleUtils;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
@@ -184,5 +185,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
+
+    'user_agent' => env('USER_AGENT', GuzzleUtils::defaultUserAgent()),
 
 ];
