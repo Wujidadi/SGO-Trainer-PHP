@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   app:
-    image: wujidadi/nginx-php:2.5.1
+    image: wujidadi/nginx-php:2.5.2
     container_name: ${CONTAINER_NAME_PREFIX}
     hostname: ${CONTAINER_HOST_PREFIX}
     working_dir: ${CONTAINER_WORKDIR_APP}
@@ -29,9 +29,10 @@ services:
     restart: unless-stopped
     depends_on:
       - database
+      - cache
 
   cache:
-    image: redis:7.2-rc-alpine
+    image: redis:7.2-rc2-alpine
     container_name: ${CONTAINER_NAME_PREFIX}-Cache
     hostname: ${CONTAINER_HOST_PREFIX}-cache
     volumes:
@@ -43,11 +44,9 @@ services:
       - ${DOCKER_CACHE_PORT:-6379}:6379
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
-    depends_on:
-      - app
 
   database:
-    image: postgres:15.2
+    image: postgres:15.3
     container_name: ${CONTAINER_NAME_PREFIX}-Database
     hostname: ${CONTAINER_HOST_PREFIX}-database
     environment:
