@@ -3,7 +3,7 @@
 namespace App\Services\Player;
 
 use App\Exceptions\GetPlayerException;
-use App\Repositories\PlayerRepository;
+use App\Models\Players;
 
 class PlayerService
 {
@@ -12,7 +12,7 @@ class PlayerService
      */
     public function getToken(string $playerName): string
     {
-        if (empty($player = resolve(PlayerRepository::class)->getByName($playerName))) {
+        if (empty($player = Players::find($playerName))) {
             throw new GetPlayerException('Player not found');
         }
         return $player->token;
