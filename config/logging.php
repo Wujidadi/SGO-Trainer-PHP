@@ -141,6 +141,16 @@ return [
             'replace_placeholders' => true,
             'by_middleware' => env('LOG_SGO_BY_MIDDLEWARE', false),
         ],
+
+        'trainer' => [
+            'driver' => 'daily',
+            'tap' => [MicrosecondFormatter::class],
+            'path' => storage_path('logs/trainer/trainer.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+            'permission' => 0664,
+            'replace_placeholders' => true,
+        ],
     ],
 
 ];
