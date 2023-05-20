@@ -50,16 +50,25 @@ class PlayerProcessLastActionTime extends Model
         return $this->belongsTo(PlayerProcesses::class, 'player_name', 'player_name');
     }
 
+    /**
+     * @return Carbon|null $autoHunt
+     */
     public function getAutoHuntAttribute(): ?Carbon
     {
         return $this->last_auto_hunt_at;
     }
 
+    /**
+     * @return Carbon|null $autoMine
+     */
     public function getAutoMineAttribute(): ?Carbon
     {
         return $this->last_auto_mine_at;
     }
 
+    /**
+     * @return Carbon|null $autoForge
+     */
     public function getAutoForgeAttribute(): ?Carbon
     {
         return $this->last_auto_forge_at;
