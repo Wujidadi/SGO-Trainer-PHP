@@ -11,8 +11,11 @@ use Exception;
 
 class TrainerInfoLogService
 {
-    private string $playerName;
-    private string $category;
+    protected string $playerName;
+    protected string $category;
+    protected string $message;
+
+    protected const MIN_SAME_LOG_INTERVAL_IN_MINUTE = 10;
 
     public function setPlayer(string $playerName): static
     {
@@ -50,15 +53,17 @@ class TrainerInfoLogService
                 }
             }
         }
-        $message = call_user_func_array('sprintf', $message);
+        $this->message = call_user_func_array('sprintf', $message);
 
         try {
-            TrainerInfoLogs::create([
-                'time' => Carbon::now()->format('Y-m-d H:i:s.u'),
-                'player_name' => $this->playerName,
-                'category' => $this->category,
-                'message' => $message,
-            ]);
+            if (!$this->hasQuickSameLog()) {
+                TrainerInfoLogs::create([
+                    'time' => Carbon::now()->format('Y-m-d H:i:s.u'),
+                    'player_name' => $this->playerName,
+                    'category' => $this->category,
+                    'message' => $this->message,
+                ]);
+            }
             return 0;
         } catch (Exception $e) {
             LogFacade::laravel()->error(
@@ -70,5 +75,25 @@ class TrainerInfoLogService
             );
             return 1;
         }
+    }
+
+    protected function hasQuickSameLog(): bool
+    {
+        $lastLog = TrainerInfoLogs::where('player_name', $this->playerName)
+            ->orderByDesc('time')
+            ->first();
+        if (!$lastLog) {
+            return false;
+        }
+        if ($lastLog->category !== $this->category) {
+            return false;
+        }
+        if ($lastLog->message !== $this->message) {
+            return false;
+        }
+        if ($lastLog->time->diffInMinutes() >= self::MIN_SAME_LOG_INTERVAL_IN_MINUTE) {
+            return false;
+        }
+        return true;
     }
 }
