@@ -8,9 +8,13 @@ use App\Models\Players;
 class PlayerService
 {
     /**
+     * 取得玩家 token
+     *
+     * @param string $playerName 玩家暱稱
+     * @return string
      * @throws GetPlayerException
      */
-    public function getToken(string $playerName): string
+    public static function getToken(string $playerName): string
     {
         if (empty($player = Players::find($playerName))) {
             throw new GetPlayerException('Player not found');

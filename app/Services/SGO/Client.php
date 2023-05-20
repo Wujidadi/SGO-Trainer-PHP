@@ -5,7 +5,6 @@ namespace App\Services\SGO;
 use App\Constants\JsonFlag;
 use App\Exceptions\GetPlayerException;
 use App\Services\Player\PlayerService;
-use Exception;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\HandlerStack as HttpHandlerStack;
 use GuzzleHttp\Middleware as HttpMiddleware;
@@ -34,7 +33,7 @@ class Client
             'token' => $this->token,
             'user-agent' => config('app.user_agent'),
             'origin' => $this->originHost,
-            'referer' => $this->originHost . '/',
+            'referer' => "$this->originHost/",
         ];
         $this->options = [
             RequestOptions::VERIFY => false,
@@ -60,7 +59,7 @@ class Client
      */
     private function getToken(): void
     {
-        if (empty($this->token = resolve(PlayerService::class)->getToken($this->playerName))) {
+        if (empty($this->token = PlayerService::getToken($this->playerName))) {
             throw new GetPlayerException('Token is empty');
         }
     }
@@ -78,7 +77,7 @@ class Client
         return $this->parseResponseBody($response->getBody());
     }
 
-    public function post(string $url, array $body = [], array $headers = []): object|string
+    public function post(string $url, array|object $body = [], array $headers = []): object|string
     {
         $url = $this->apiHost . $url;
         $this->headers['content-type'] = 'application/json; charset=UTF-8';

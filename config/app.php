@@ -188,4 +188,9 @@ return [
 
     'user_agent' => env('USER_AGENT', GuzzleUtils::defaultUserAgent()),
 
+    'sgo' => [
+        'stop_rest'      => (float) env('SGO_STOP_REST_PERCENTAGE', 0.95),
+        'stop_replenish' => (float) env('SGO_STOP_REPLENISH_PERCENTAGE', 0.95),
+    ],
+
 ];
