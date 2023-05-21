@@ -10,7 +10,7 @@ use App\Exceptions\SgoServerException;
 /**
  * 處理狩獵事宜
  *
- * @package App\Console\Trait
+ * @used-by \App\Console\Commands\AutoHunt
  */
 trait HandleHunt
 {

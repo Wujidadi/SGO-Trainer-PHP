@@ -8,6 +8,7 @@ use App\Console\Trait\AutoSGO\HandleLog;
 use App\Exceptions\GetPlayerException;
 use App\Exceptions\SgoServerException;
 use App\Services\Log\TrainerInfoLogService;
+use App\Services\Player\PlayerProcessService;
 use App\Services\Player\PlayerSettingService;
 use App\Services\SGO\SgoService;
 use Illuminate\Console\Command;
@@ -73,5 +74,35 @@ abstract class AutoSGO extends Command
     protected function getTime(): void
     {
         $this->timestamp = (int) bcmul(microtime(true), 1000);
+    }
+
+    /**
+     * 自動狩獵程序是否開啟
+     *
+     * @throws GetPlayerException
+     */
+    protected function isAutoHuntOn(): bool
+    {
+        return PlayerProcessService::isAutoHuntOn($this->player);
+    }
+
+    /**
+     * 自動挖礦程序是否開啟
+     *
+     * @throws GetPlayerException
+     */
+    protected function isAutoMineOn(): bool
+    {
+        return PlayerProcessService::isAutoMineOn($this->player);
+    }
+
+    /**
+     * 自動鍛造程序是否開啟
+     *
+     * @throws GetPlayerException
+     */
+    protected function isAutoForgeOn(): bool
+    {
+        return PlayerProcessService::isAutoForgeOn($this->player);
     }
 }

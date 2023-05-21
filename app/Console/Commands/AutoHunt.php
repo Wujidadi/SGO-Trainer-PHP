@@ -7,7 +7,6 @@ use App\Console\Trait\AutoSGO\HandleWeak;
 use App\Constants\Hunt;
 use App\Exceptions\GetPlayerException;
 use App\Exceptions\SgoServerException;
-use App\Services\Player\PlayerProcessService;
 use Exception;
 
 class AutoHunt extends AutoSGO
@@ -52,7 +51,6 @@ class AutoHunt extends AutoSGO
                     continue;
                 }
 
-                // 檢測到自動狩獵程序被關閉時立即中斷
                 if (!$this->isAutoHuntOn()) {
                     continue;
                 }
@@ -140,13 +138,5 @@ class AutoHunt extends AutoSGO
                 $this->handleException($e);
             }
         }
-    }
-
-    /**
-     * @throws GetPlayerException
-     */
-    private function isAutoHuntOn(): bool
-    {
-        return PlayerProcessService::isAutoHuntOn($this->player);
     }
 }
