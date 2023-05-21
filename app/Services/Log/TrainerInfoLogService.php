@@ -15,7 +15,7 @@ class TrainerInfoLogService
     protected string $category;
     protected string $message;
 
-    protected const MIN_SAME_LOG_INTERVAL_IN_MINUTE = 10;
+    protected const MIN_SAME_LOG_INTERVAL_IN_MINUTE = 3;
 
     public function setPlayer(string $playerName): static
     {
