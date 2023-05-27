@@ -2,6 +2,7 @@
 
 namespace App\Console\Trait\AutoSGO;
 
+use App\Exceptions\Sgo\GetGeneralResponseException;
 use App\Exceptions\SgoServerException;
 
 /**
@@ -96,6 +97,41 @@ trait HandleAction
     }
 
     /**
+     * 取得目前裝備和技能
+     *
+     * @return object
+     * @throws SgoServerException
+     */
+    protected function getHuntInfo(): object
+    {
+        return $this->handleAction('getHuntInfo');
+    }
+
+    /**
+     * 著裝
+     *
+     * @param int $id 裝備 ID
+     * @return object|string
+     * @throws SgoServerException
+     */
+    public function equip(int $id): object|string
+    {
+        return $this->handleAction('equip', $id);
+    }
+
+    /**
+     * 卸裝
+     *
+     * @param int $id 裝備 ID
+     * @return object|string
+     * @throws SgoServerException
+     */
+    public function unequip(int $id): object|string
+    {
+        return $this->handleAction('unequip', $id);
+    }
+
+    /**
      * 狩獵
      *
      * @param int $type
@@ -105,6 +141,19 @@ trait HandleAction
     protected function hunt(int $type): object
     {
         return $this->handleAction('hunt', $type);
+    }
+
+    /**
+     * 設定裝備顏色
+     *
+     * @param int $id
+     * @param string $color
+     * @return object
+     * @throws SgoServerException
+     */
+    public function setEquipmentColor(int $id, string $color): object
+    {
+        return $this->handleAction('setEquipmentColor', $id, $color);
     }
 
     /**

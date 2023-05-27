@@ -153,6 +153,48 @@ trait HandleLog
     }
 
     /**
+     * 記錄著裝日誌
+     *
+     * @param object $equipment
+     * @return void
+     * @throws DbLogException
+     */
+    protected function logEquip(object $equipment): void
+    {
+        $this->setLogCategory('裝備')
+            ->log('穿上%s「%s」(攻擊 %d, 防禦 %d, 幸運 %d, 重量 %d, 耐久 %d)',
+                $equipment->typeName,
+                $equipment->name,
+                $equipment->atk,
+                $equipment->def,
+                $equipment->lck,
+                $equipment->wgt,
+                $equipment->durability
+            );
+    }
+
+    /**
+     * 記錄卸裝日誌
+     *
+     * @param object $equipment
+     * @return void
+     * @throws DbLogException
+     */
+    protected function logUnequip(object $equipment): void
+    {
+        $this->setLogCategory('裝備')
+            ->log('%s: 卸下%s「%s」(攻擊 %d, 防禦 %d, 幸運 %d, 重量 %d, 耐久 %d)',
+                $equipment->typeName,
+                $equipment->name,
+                $equipment->atk,
+                $equipment->def,
+                $equipment->lck,
+                $equipment->wgt,
+                $equipment->durability
+            );
+    }
+
+    /**
      * 記錄鍛造日誌
      *
      * @return void

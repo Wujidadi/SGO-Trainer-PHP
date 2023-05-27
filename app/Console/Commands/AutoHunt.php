@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Console\Trait\AutoSGO\HandleEquip;
 use App\Console\Trait\AutoSGO\HandleHunt;
 use App\Console\Trait\AutoSGO\HandleWeak;
 use App\Constants\Hunt;
@@ -11,7 +12,7 @@ use Exception;
 
 class AutoHunt extends AutoSGO
 {
-    use HandleHunt, HandleWeak;
+    use HandleHunt, HandleWeak, HandleEquip;
 
     protected $signature = 'sgo:auto-hunt {--player=}';
     protected $description = '自動狩獵';

@@ -63,8 +63,11 @@ trait HandleHunt
         if ($this->rush && $this->profile->huntStage < $this->rush) {
             $huntType = Hunt::TYPE['rush'];
         }
-        $this->hunt($huntType);
-        $this->logHunt(Hunt::DESCRIPTION[$huntType]);
+        // 先處理裝備再開始狩獵
+        if ($this->handleEquipment()) {
+            $this->hunt($huntType);
+            $this->logHunt(Hunt::DESCRIPTION[$huntType]);
+        }
     }
 
     /**

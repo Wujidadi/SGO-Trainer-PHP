@@ -93,6 +93,38 @@ class Api
     }
 
     /**
+     * 取得目前裝備和技能
+     *
+     * @return object|string
+     */
+    public function getHuntInfo(): object|string
+    {
+        return $this->client->get('/api/hunt/info');
+    }
+
+    /**
+     * 著裝
+     *
+     * @param int $equipmentId
+     * @return object|string
+     */
+    public function equip(int $equipmentId): object|string
+    {
+        return $this->client->post("/api/equipment/$equipmentId/equip");
+    }
+
+    /**
+     * 卸裝
+     *
+     * @param int $equipmentId
+     * @return object|string
+     */
+    public function unequip(int $equipmentId): object|string
+    {
+        return $this->client->post("/api/equipment/$equipmentId/unequip");
+    }
+
+    /**
      * 狩獵
      *
      * @param int $type
@@ -127,6 +159,20 @@ class Api
             return $items;
         }
         return $items->$type ?? [];
+    }
+
+    /**
+     * 設定裝備顏色
+     *
+     * @param int $equipmentId
+     * @param string $color
+     * @return object|string
+     */
+    public function setEquipmentColor(int $equipmentId, string $color): object|string
+    {
+        return $this->client->post("/api/equipment/$equipmentId/color", [
+            'color' => $color,
+        ]);
     }
 
     /**
