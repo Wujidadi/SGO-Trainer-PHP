@@ -6,6 +6,7 @@ use App\Console\Trait\AutoSGO\HandleEquip;
 use App\Console\Trait\AutoSGO\HandleHunt;
 use App\Console\Trait\AutoSGO\HandleWeak;
 use App\Constants\Hunt;
+use App\Exceptions\DbLogException;
 use App\Exceptions\GetPlayerException;
 use App\Exceptions\SgoServerException;
 use Exception;
@@ -135,6 +136,8 @@ class AutoHunt extends AutoSGO
                 $this->handleGetPlayerException($e);
             } catch (SgoServerException $e) {
                 $this->handleSgoServerException($e);
+            } catch (DbLogException $e) {
+                $this->handleDbLogException($e);
             } catch (Exception $e) {
                 $this->handleException($e);
             }

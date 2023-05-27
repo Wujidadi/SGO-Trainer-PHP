@@ -13,8 +13,6 @@ use App\Exceptions\TrainerSettingException;
  */
 trait HandleEquip
 {
-    protected array $equipments;
-
     /**
      * 處理穿裝、卸裝、裝備回收等各種事項
      *
@@ -97,7 +95,9 @@ trait HandleEquip
 
             // 依顏色和類型篩選裝備
             $filteredEquipments = $equipments->filter(function ($equipment) use ($typeName, $typeConf, $equipConf) {
-                return $equipment->typeName === $typeName && $equipment->color === $typeConf->color && $equipment->durability >= $equipConf->durability;
+                return $equipment->typeName === $typeName
+                    && $equipment->color === $typeConf->color
+                    && $equipment->durability >= $equipConf->durability;
             });
 
             // 數量為空時執行 After Run Out 策略

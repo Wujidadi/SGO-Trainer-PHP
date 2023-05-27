@@ -2,7 +2,6 @@
 
 namespace App\Console\Trait\AutoSGO;
 
-use App\Exceptions\Sgo\GetGeneralResponseException;
 use App\Exceptions\SgoServerException;
 
 /**
@@ -177,8 +176,7 @@ trait HandleAction
      */
     protected function forge(): object
     {
-        $payload = $this->setting->forge;
-        return $this->handleAction('forge', $payload);
+        return $this->handleAction('forge', $this->forgePayload);
     }
 
     /**

@@ -4,6 +4,7 @@ namespace App\Console\Trait\AutoSGO;
 
 use App\Exceptions\DbLogException;
 use App\Exceptions\SgoServerException;
+use App\Structs\WeakLine;
 use App\Utilities\Helpers\DataHelper;
 
 /**
@@ -13,11 +14,6 @@ use App\Utilities\Helpers\DataHelper;
  */
 trait HandleWeak
 {
-    protected object $hpTop;
-    protected object $hpBottom;
-    protected object $spTop;
-    protected object $spBottom;
-
     /**
      * 代入參數，計算 HP 或 SP 休整上/下限
      *
@@ -35,10 +31,7 @@ trait HandleWeak
         $fullValue = $this->profile->$fullKey; // ex: $this->profile->fullHp
 
         if (empty($this->$border)) {
-            $this->$border = new class() {
-                public int $rest;
-                public int $replenish;
-            };
+            $this->$border = resolve(WeakLine::class);
         }
 
         // 設定值不存在

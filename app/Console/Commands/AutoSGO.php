@@ -11,6 +11,7 @@ use App\Services\Log\TrainerInfoLogService;
 use App\Services\Player\PlayerProcessService;
 use App\Services\Player\PlayerSettingService;
 use App\Services\SGO\SgoService;
+use App\Structs\WeakLine;
 use Illuminate\Console\Command;
 
 /**
@@ -23,11 +24,17 @@ abstract class AutoSGO extends Command
     protected SgoService $service;
     protected TrainerInfoLogService $logService;
 
+    protected int $timestamp;
     protected ?string $player;
     protected object $profile;
     protected object $setting;
     protected object $weakSetting;
-    protected int $timestamp;
+    protected WeakLine $hpTop;
+    protected WeakLine $hpBottom;
+    protected WeakLine $spTop;
+    protected WeakLine $spBottom;
+    protected array $equipments;
+    protected array $forgePayload;
 
     /**
      * 初始化 SGO 及 log 服務

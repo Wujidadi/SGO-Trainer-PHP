@@ -3,6 +3,7 @@
 namespace App\Services\SGO;
 
 use App\Services\SGO\Api as SgoApi;
+use App\Structs\ItemMap;
 
 class SgoService extends SgoApi
 {
@@ -14,6 +15,26 @@ class SgoService extends SgoApi
     public function goHome(): object|string
     {
         return $this->move(0);
+    }
+
+    /**
+     * 取得除武器裝備外的物品清單，以物品名稱為鍵值
+     *
+     * @return ItemMap
+     */
+    public function getItemMap(): ItemMap
+    {
+        $map = resolve(ItemMap::class);
+
+        $items = $this->getItems();
+        $types = ['mines', 'consumables'];
+        foreach ($types as $type) {
+            foreach ($items->$type as $item) {
+                $map->$type->{$item->name} = $item;
+            }
+        }
+
+        return $map;
     }
 
     /**

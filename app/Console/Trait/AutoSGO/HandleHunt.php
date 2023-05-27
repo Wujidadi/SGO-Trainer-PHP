@@ -6,6 +6,7 @@ use App\Constants\Hunt;
 use App\Constants\Zone;
 use App\Exceptions\DbLogException;
 use App\Exceptions\SgoServerException;
+use App\Exceptions\TrainerSettingException;
 
 /**
  * 處理狩獵事宜
@@ -19,6 +20,7 @@ trait HandleHunt
      *
      * @throws SgoServerException
      * @throws DbLogException
+     * @throws TrainerSettingException
      */
     protected function handleHunt(): void
     {

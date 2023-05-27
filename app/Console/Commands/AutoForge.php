@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Console\Trait\AutoSGO\HandleForge;
+use App\Exceptions\DbLogException;
 use App\Exceptions\GetPlayerException;
+use App\Exceptions\NullMineException;
 use App\Exceptions\SgoServerException;
 use Exception;
 
@@ -92,6 +94,10 @@ class AutoForge extends AutoSGO
                 $this->handleGetPlayerException($e);
             } catch (SgoServerException $e) {
                 $this->handleSgoServerException($e);
+            } catch (NullMineException $e) {
+                $this->handleNullMineException($e);
+            } catch (DbLogException $e) {
+                $this->handleDbLogException($e);
             } catch (Exception $e) {
                 $this->handleException($e);
             }

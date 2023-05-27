@@ -2,7 +2,9 @@
 
 namespace App\Console\Trait\AutoSGO;
 
+use App\Exceptions\DbLogException;
 use App\Exceptions\GetPlayerException;
+use App\Exceptions\NullMineException;
 use App\Exceptions\SgoServerException;
 use App\Utilities\Log\LogFacade;
 use Throwable;
@@ -39,7 +41,7 @@ trait HandleException
      */
     protected function handleGetPlayerException(GetPlayerException $e): void
     {
-        LogFacade::trainer()->error('%s: %s', $this->player, $e->getMessage());
+        $this->justLogTheError($e);
     }
 
     /**
@@ -65,5 +67,38 @@ trait HandleException
         }
 
         LogFacade::trainer()->error($message);
+    }
+
+    /**
+     * 處理寫入資料庫日誌例外
+     *
+     * @param DbLogException $e
+     * @return void
+     */
+    protected function handleDbLogException(DbLogException $e): void
+    {
+        $this->justLogTheError($e);
+    }
+
+    /**
+     * 處理礦物素材不存在的例外
+     *
+     * @param NullMineException $e
+     * @return void
+     */
+    protected function handleNullMineException(NullMineException $e): void
+    {
+        $this->justLogTheError($e);
+    }
+
+    /**
+     * 單純記錄錯誤日誌於檔案
+     *
+     * @param Throwable $e
+     * @return void
+     */
+    private function justLogTheError(Throwable $e): void
+    {
+        LogFacade::trainer()->error('%s: %s', $this->player, $e->getMessage());
     }
 }
