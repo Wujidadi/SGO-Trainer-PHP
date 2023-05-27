@@ -104,7 +104,7 @@ class Api
     }
 
     /**
-     * 進入秘徑
+     * 進入岔路
      *
      * @param int $pathId
      * @return object|string

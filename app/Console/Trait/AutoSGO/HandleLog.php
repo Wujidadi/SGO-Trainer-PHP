@@ -127,9 +127,9 @@ trait HandleLog
     }
 
     /**
-     * 記錄進入秘徑日誌
+     * 記錄進入岔路日誌
      *
-     * @param string $pathName 秘徑地圖名稱
+     * @param string $pathName 岔路地圖名稱
      * @return void
      * @throws DbLogException
      */

@@ -76,14 +76,14 @@ trait HandleHunt
      */
     protected function handleZone(): void
     {
-        // 狩獵目標區域為秘徑
+        // 狩獵目標區域為岔路
         if (in_array($this->zone, array_keys(Zone::HIDDEN))) {
-            // 不在秘徑主地圖
+            // 不在主地圖
             if ($this->profile->huntZone != Zone::HIDDEN[$this->zone]) {
                 $this->zone = Zone::HIDDEN[$this->zone];
                 return;
             }
-            // 已在秘徑
+            // 已進入岔路
             if ($this->profile->zoneName == Zone::MAP[$this->zone]) {
                 // 已超過最大樓層，直接返回主地圖的第 1 層（不必先回起始之鎮）
                 if ($this->profile->huntStage > $this->stage) {
@@ -91,18 +91,18 @@ trait HandleHunt
                 }
                 return;
             }
-            // 未到秘徑入口樓層
+            // 未到岔路入口樓層
             if ($this->profile->huntStage < Zone::ENTRY[$this->zone]) {
                 $this->zone = Zone::HIDDEN[$this->zone];
                 return;
             }
-            // 已到秘徑入口樓層
+            // 已到岔路入口樓層
             if ($this->profile->huntStage == Zone::ENTRY[$this->zone]) {
                 $this->profile = $this->path($this->zone)->profile;
                 $this->logPath(Zone::MAP[$this->zone]);
                 return;
             }
-            // 已過秘徑入口樓層但尚未進入，也無法直接返回主地圖 1 樓，只能直接回城
+            // 已過岔路入口樓層但尚未進入，也無法直接返回主地圖 1 樓，只能直接回城
             $this->zone = 0;
         }
     }
