@@ -95,6 +95,10 @@ class AutoHunt extends AutoSGO
                         // 完成移動
                         $this->completeMove();
                         $this->logCompleteMove();
+                        // 安全樓層以下（殺人犯活躍區內）強制吃藥，沒藥吃就回城休息
+                        if ($this->forceTakeMedicine()) {
+                            continue;
+                        }
                         // 繼續狩獵
                         $this->handleHunt();
                         continue;
@@ -115,6 +119,8 @@ class AutoHunt extends AutoSGO
                                 $this->takeMedicine('sp');
                             }
                         } else {
+                            // 安全樓層以下（殺人犯活躍區內）強制吃藥，沒藥吃就回城休息
+                            $this->forceTakeMedicine();
                             // 休息
                             if ($this->profile->hp < $this->hpTop->rest) {
                                 $this->rest();

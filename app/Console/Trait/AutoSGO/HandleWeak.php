@@ -2,8 +2,10 @@
 
 namespace App\Console\Trait\AutoSGO;
 
+use App\Constants\Zone;
 use App\Exceptions\DbLogException;
 use App\Exceptions\SgoServerException;
+use App\Exceptions\TrainerSettingException;
 use App\Structs\WeakLine;
 use App\Utilities\Helpers\DataHelper;
 
@@ -121,13 +123,15 @@ trait HandleWeak
      * 吃藥
      *
      * @param string $type hp 或 sp
+     * @return bool 正常吃到補品返回 true，吃到沒藥了進入休息狀態返回 false
      * @throws SgoServerException
      * @throws DbLogException
+     * @throws TrainerSettingException
      */
-    protected function takeMedicine(string $type): void
+    protected function takeMedicine(string $type): bool
     {
         if (empty($this->weakSetting->medicine) || empty($this->weakSetting->medicine->$type)) {
-            return;
+            throw new TrainerSettingException('補品設定不正確');
         }
 
         $bottom = "{$type}Bottom"; // hpBottom, spBottom
@@ -148,10 +152,41 @@ trait HandleWeak
             $this->getTime();
         }
 
-        // 完全沒吃到補品，代表指定的補品已吃完，但仍然處在衰弱狀態，只好休息
+        // 完全沒吃到補品，代表已經沒藥吃了，但仍然處在衰弱狀態
         if ($useCount <= 0) {
-            $this->rest();
-            $this->logRest();
+            if ($this->profile->huntStage > $this->setting->hunt->killerStage) {
+                // 位於安全樓層（殺人犯活躍區以外）時原地休息
+                $this->rest();
+                $this->logRest();
+            } else {
+                // 位於殺人犯活躍區時回城
+                $this->goHome();
+                $this->logMove(Zone::MAP[0]);
+            }
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * 位於安全樓層以下（殺人犯活躍區內）時強制吃藥，沒藥吃就回城休息
+     *
+     * @return bool 正常吃到補品返回 true，吃到沒藥了進入休息狀態返回 false
+     * @throws SgoServerException
+     * @throws DbLogException
+     * @throws TrainerSettingException
+     */
+    protected function forceTakeMedicine(): bool
+    {
+        if ($this->profile->huntStage <= $this->setting->hunt->killerStage) {
+            if ($this->profile->hp < $this->hpTop->rest) {
+                return $this->takeMedicine('hp');
+            }
+            if ($this->profile->sp < $this->spTop->rest) {
+                return $this->takeMedicine('sp');
+            }
+        }
+        return true;
     }
 }

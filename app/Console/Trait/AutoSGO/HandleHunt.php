@@ -26,6 +26,21 @@ trait HandleHunt
     {
         $this->getProfile();
 
+        // HP 或 SP 過低要休息時，要避開殺人犯
+        if (!$this->weakSetting->replenish && $this->isWeak()) {
+            if ($this->profile->zoneName === '起始之鎮') {
+                // 在起始之鎮時，休息完再出發
+                $this->rest();
+                $this->logRest();
+                return;
+            } elseif ($this->profile->huntStage <= $this->setting->hunt->killerStage) {
+                // 不在起始之鎮時，回城休息
+                $this->goHome();
+                $this->logMove(Zone::MAP[0]);
+                return;
+            }
+        }
+
         $this->handleZone();
 
         // 往目標地圖移動
